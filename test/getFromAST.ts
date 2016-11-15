@@ -304,8 +304,6 @@ fragment businessAreaInfo on BusinessArea {
       [subjectInfo, subjectInfo],
     );
 
-    // XXX we don't attach a fragment here, because if we do, it won't be === to
-    // the same fragment created with createFragment.
     const query = gql`
       query {
         businessAreas {
@@ -313,14 +311,13 @@ fragment businessAreaInfo on BusinessArea {
         }
       }
 
-      #fragment subjectInfo on Subject {
-      #  id
-      #  name
-      #}
+      fragment subjectInfo on Subject {
+        id
+        name
+      }
     `;
 
-    let fullDoc = addFragmentsToDocument(query, businessAreaInfo);
-    fullDoc = addFragmentsToDocument(fullDoc, subjectInfo);
+    const fullDoc = addFragmentsToDocument(query, businessAreaInfo);
 
     assert.equal(print(fullDoc), `{
   businessAreas {
